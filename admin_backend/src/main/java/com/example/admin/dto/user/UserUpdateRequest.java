@@ -1,0 +1,20 @@
+package com.example.admin.dto.user;
+
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class UserUpdateRequest {
+	@Size(min = 6, max = 20, message = "ユーザー名は3～20文字で入力してください")
+	private String name;
+	
+	@Pattern(
+		    regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
+		    message = "パスワードは8～20文字の英数字で入力してください"
+		)
+	private String password;
+}
