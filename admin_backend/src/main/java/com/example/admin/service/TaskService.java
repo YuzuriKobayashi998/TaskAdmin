@@ -66,7 +66,7 @@ public class TaskService {
 		task.setStartDate(request.getStartDate());
 		task.setEndDate(request.getEndDate());
 		task.setPriority(request.getPriority());
-		task.setFinished(request.getIsFinished());
+		task.setFinished(request.getFinished());
 		task.setUser(user);
 		task.setCategory(taskCategory);
 		

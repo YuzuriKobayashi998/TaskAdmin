@@ -32,7 +32,7 @@ public class TaskCreateRequest {
 	private Integer priority;
 	
 	@NotNull(message = "タスク完了か未完了かを記入してください")
-	private Boolean isFinished;
+	private Boolean finished;
 	
 	@NotNull
 	private Long taskCategoryId;

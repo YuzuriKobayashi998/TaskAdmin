@@ -8,7 +8,7 @@ export interface UserUpdateRequest {
   password: string;
 }
 
-export interface UserResponce {
+export interface UserResponse {
+  id: number;
   name: string;
-  password: string;
 }
