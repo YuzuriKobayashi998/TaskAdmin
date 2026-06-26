@@ -1,9 +1,10 @@
 import { UserCreateRequest } from "../types/user";
 import { UserUpdateRequest } from "../types/user";
+import { UserResponse } from "../types/user";
 
 const API_URL = "http://localhost:8080/users";
 
-export async function getMyPage(token: string) {
+export async function getMyPage(token: string): Promise<UserResponse> {
   const response = await fetch(`${API_URL}/mypage`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -17,7 +18,7 @@ export async function getMyPage(token: string) {
   return response.json();
 }
 
-export async function createUser(user: UserCreateRequest) {
+export async function createUser(user: UserCreateRequest):Promise<UserResponse> {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -34,7 +35,7 @@ export async function createUser(user: UserCreateRequest) {
 export async function updateUser(
   user: UserUpdateRequest,
   token: string
-) {
+):Promise<UserResponse> {
   const response = await fetch(`${API_URL}/mypage`, {
     method: "PUT",
     headers: {
