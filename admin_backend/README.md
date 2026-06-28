@@ -7,6 +7,7 @@
 
 ## フロントエンド
 - TypeScript
+- React
 - Next.js
 
 ## バックエンド
