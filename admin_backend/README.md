@@ -30,6 +30,7 @@
 - @RequestMapping：("/tasks")の共通部分を決める。毎回＠GetMappingなど書かなくていい
 - @RequiredArgsConstructor：finalが付いたフィールドだけ自動でコンストラクタを作る
 - @RequestBody：JSONを受け取る。引数に使う。
+- @Valid：バリデーションの使用宣言。
 
 ## 備忘録
 - DTO：フロントとバックエンドに渡したいデータを選別する。Entityを全て受け渡しするとセキュリティ上の問題がある。
