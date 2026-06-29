@@ -94,12 +94,12 @@ public class UserService {
 				.orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
 		
 		//ユーザーを削除したらタスクも削除する
-		List<Task> tasks = taskRepository.findByUserIdAndDeletedFalse(userId);
+		List<Task> tasks = taskRepository.findByUser_IdAndDeletedFalse(userId);
 		tasks.forEach(task -> task.setDeleted(true)); 
 		taskRepository.saveAll(tasks);
 		
 		//ユーザーを削除したらタスクカテゴリも削除する
-		List<TaskCategory> taskCategories = taskCategoryRepository.findByUserIdAndDeletedFalse(userId);
+		List<TaskCategory> taskCategories = taskCategoryRepository.findByUser_IdAndDeletedFalse(userId);
 		taskCategories.forEach(taskCategory -> taskCategory.setDeleted(true));
 		taskCategoryRepository.saveAll(taskCategories);
 		

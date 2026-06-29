@@ -13,14 +13,14 @@ import com.example.admin.repository.entity.TaskCategory;
 @Repository
 public interface TaskCategoryRepository extends JpaRepository<TaskCategory, Long> {
 	// 全件
-    List<TaskCategory> findByUserId(Long userId);
+    List<TaskCategory> findByUser_Id(Long userId);
 
     // 一覧（メイン）
-    List<TaskCategory> findByUserIdAndDeletedFalse(Long userId);
+    List<TaskCategory> findByUser_IdAndDeletedFalse(Long userId);
 
     // 削除済み一覧（ゴミ箱）
-    List<TaskCategory> findByUserIdAndDeletedTrue(Long userId);
+    List<TaskCategory> findByUser_IdAndDeletedTrue(Long userId);
 
     // 単体取得（削除用・更新用）
-    Optional<TaskCategory> findByIdAndUserIdAndDeletedFalse(Long id, Long userId);
+    Optional<TaskCategory> findByIdAndUser_IdAndDeletedFalse(Long id, Long userId);
 }

@@ -47,7 +47,7 @@ public class TaskService {
 	
 	public List<TaskResponse> findAllByTaskCategoryIdAndCurrentUser(Long taskCategoryId) {
 		Long userId = 1L;
-		List<Task> tasks = taskRepository.findByTaskCategoryIdAndUserIdAndDeletedFalse(taskCategoryId,userId);
+		List<Task> tasks = taskRepository.findByCategory_IdAndUser_IdAndDeletedFalse(taskCategoryId,userId);
 		return tasks.stream()
 				.map(this::convertToResponse)
 				.toList();
@@ -58,7 +58,7 @@ public class TaskService {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
 		
-		TaskCategory taskCategory = taskCategoryRepository.findByIdAndUserIdAndDeletedFalse(request.getTaskCategoryId(), userId)
+		TaskCategory taskCategory = taskCategoryRepository.findByIdAndUser_IdAndDeletedFalse(request.getTaskCategoryId(), userId)
 				.orElseThrow(() -> new RuntimeException("タスクカテゴリが存在しません"));
 		
 		Task task = new Task();
@@ -77,7 +77,7 @@ public class TaskService {
 	
 	public TaskResponse update(Long taskId, TaskUpdateRequest request) {
 		Long userId = 1L;
-		Task task = taskRepository.findByIdAndUserIdAndDeletedFalse (taskId, userId)
+		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse (taskId, userId)
 				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
 		if(request.getTitle() != null) {
 		    task.setTitle(request.getTitle());
@@ -105,7 +105,7 @@ public class TaskService {
 	
 	public void delete(Long taskId) {
 		Long userId = 1L;
-		Task task = taskRepository.findByIdAndUserIdAndDeletedFalse (taskId, userId)
+		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse (taskId, userId)
 				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
 		task.setDeleted(true);
 		taskRepository.save(task);

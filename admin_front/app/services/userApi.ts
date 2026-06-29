@@ -19,7 +19,7 @@ export async function getMyPage(token: string): Promise<UserResponse> {
 }
 
 export async function createUser(user: UserCreateRequest):Promise<UserResponse> {
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,6 +27,8 @@ export async function createUser(user: UserCreateRequest):Promise<UserResponse> 
     body: JSON.stringify(user),
   });
   if (!response.ok) {
+    console.log("status:", response.status);
+    console.log(await response.text());
     throw new Error("ユーザー登録に失敗しました");
   }
   return response.json();
