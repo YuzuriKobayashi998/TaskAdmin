@@ -1,5 +1,6 @@
 package com.example.admin.repository.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -29,6 +30,13 @@ public class TaskCategory {
 	
 	@Column(nullable = false)
 	private String title;
+	
+    private String description; // 説明
+    
+    @Column(nullable = false)
+    private Boolean isFinished; // 大分類完了フラグ
+    @Column(nullable = false)
+    private LocalDate dueDate; 
 	
     @Column(name = "created_date", updatable = false)
     @CreationTimestamp

@@ -9,6 +9,7 @@ import com.example.admin.dto.user.LoginRequest;
 import com.example.admin.dto.user.UserResponse;
 import com.example.admin.repository.UserRepository;
 import com.example.admin.repository.entity.User;
+import com.example.admin.security.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class LoginService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final JwtUtil jwtUtil;
 	
 	private UserResponse convertToResponse(User user) {
 		UserResponse userResponse = new UserResponse();
@@ -38,7 +40,9 @@ public class LoginService {
 	                "ユーザー名またはパスワードが違います"
 	        );
 	    }
-
-	    return convertToResponse(user);
+        UserResponse response = convertToResponse(user);
+        //JwtUtilを使ってJWTトークンを生成し、レスポンスにセットする
+        response.setToken(jwtUtil.generateToken(user.getName()));
+        return response;
 	}
 }

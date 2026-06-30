@@ -1,5 +1,7 @@
 package com.example.admin.dto.taskcategory;
 
+import java.time.LocalDate;
+
 import com.example.admin.dto.user.UserResponse;
 
 import lombok.Getter;
@@ -10,6 +12,10 @@ import lombok.Setter;
 public class TaskCategoryResponse {
 	private Long id;
 	private String title;
+    private String description; // 説明
+    
+    private Boolean isFinished; // 大分類完了フラグ
+    private LocalDate dueDate; 
 	//User情報を返せばEntityの構造と同じにできる
 	private UserResponse userResponse;
 	
