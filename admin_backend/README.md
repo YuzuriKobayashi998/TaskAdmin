@@ -20,6 +20,8 @@
 ## よく使うSQL文
 - mysql -u root -p //MySQLにログイン
 - brew services start mysql //MySQLを起動
+- show databases
+- show tables
 
 
 ## よく使うアノテーション
