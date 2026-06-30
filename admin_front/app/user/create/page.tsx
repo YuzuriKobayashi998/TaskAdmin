@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserCreateRequest } from "@/app/types/user";
@@ -28,10 +29,10 @@ const handleSubmit = async (
         await createUser(user);
         alert("ユーザーを登録しました");
         //ユーザー登録が完了したらログイン画面に行く
-        router.push("/login")
-    } catch(error) {
+        router.push("/user/login")
+    } catch(error:any) {
         console.error(error);
-        alert("ユーザー登録に失敗しました");
+        alert(error.message);
     }
 };
 
@@ -76,6 +77,11 @@ return (
       
       <button type="submit">登録</button>
     </form>
+          <p>
+        <Link href="/user/login">
+          ログイン画面に戻る
+        </Link>
+      </p>
   </div>
 
 );

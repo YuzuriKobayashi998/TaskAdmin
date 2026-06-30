@@ -1,3 +1,4 @@
+import { console } from "inspector";
 import { UserCreateRequest } from "../types/user";
 import { UserUpdateRequest } from "../types/user";
 import { UserResponse } from "../types/user";
@@ -26,12 +27,11 @@ export async function createUser(user: UserCreateRequest):Promise<UserResponse> 
     },
     body: JSON.stringify(user),
   });
+  const data = await response.json();
   if (!response.ok) {
-    console.log("status:", response.status);
-    console.log(await response.text());
-    throw new Error("ユーザー登録に失敗しました");
+    throw new Error(data.message);
   }
-  return response.json();
+  return data;
 }
 
 export async function updateUser(

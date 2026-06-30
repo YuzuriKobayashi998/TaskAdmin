@@ -5,7 +5,7 @@ import { TaskCategoryResponse } from "../types/taskCategory";
 const API_URL = "http://localhost:8080/task-category";
 
 export async function getTaskCategories(token: string): Promise<TaskCategoryResponse[]> {
-  const response = await fetch(`${API_URL}/task-category`, {
+  const response = await fetch(`${API_URL}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -22,7 +22,7 @@ export async function createTaskCategory(
   token: string,
   category: TaskCategoryCreateRequest
 ): Promise<TaskCategoryResponse> {
-  const response = await fetch(`${API_URL}/task-category`, {
+  const response = await fetch(`${API_URL}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -43,7 +43,7 @@ export async function updateTaskCategory(
   id: number,
   category: TaskCategoryUpdateRequest
 ): Promise<TaskCategoryResponse> {
-  const response = await fetch(`${API_URL}/task-category/${id}`, {
+  const response = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ export async function deleteTaskCategory(
   token: string,
   id: number
 ): Promise<void> {
-  const response = await fetch(`${API_URL}/task-category/${id}`, {
+  const response = await fetch(`${API_URL}/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

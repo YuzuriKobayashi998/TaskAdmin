@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.admin.dto.user.LoginRequest;
 import com.example.admin.dto.user.UserResponse;
-import com.example.admin.service.UserService;
+import com.example.admin.service.LoginService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,9 +17,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class LoginController {
-	private final UserService userService;
+	private final LoginService LoginService;
 	@PostMapping("/login")
 	public UserResponse login(@Valid @RequestBody LoginRequest request) {
-		return userService.login(request);
+		return LoginService.login(request);
 	}
 }

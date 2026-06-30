@@ -13,10 +13,10 @@ export async function login(
     },
     body: JSON.stringify(loginRequest),
   });
-
+  const data = await response.json();
   if (!response.ok) {
-    throw new Error("ログインに失敗しました");
+    throw new Error(data.message);
   }
 
-  return (await response.json()) as UserResponse;
+  return data;
 }

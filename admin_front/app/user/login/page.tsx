@@ -1,9 +1,10 @@
 "use client";
 
-import { ChangeEvent, useState, } from "react";
+import { useState, } from "react";
 import { useRouter } from "next/navigation";
 import { LoginRequest } from "@/app/types/login";
 import { login } from "@/app/services/loginApi";
+import Link from "next/link";
 
 
 export default function LoginPage(){
@@ -27,9 +28,9 @@ const handleSubmit = async (
         await login(loginUser);
         //ユーザー登録が完了したらログイン画面に行く
         router.push("/mypage")
-    } catch(error) {
+    } catch(error:any) {
         console.error(error);
-        alert("ログインに失敗しました");
+        alert(error.message);
     }
 };
 
@@ -74,6 +75,11 @@ return (
       
       <button type="submit">ログイン</button>
     </form>
+      <p>
+        <Link href="/user/create">
+          ユーザー登録はこちら
+        </Link>
+      </p>
   </div>
 
 );
