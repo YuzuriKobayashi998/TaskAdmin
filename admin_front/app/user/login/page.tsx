@@ -25,7 +25,10 @@ const handleSubmit = async (
     return;
   }
     try {
-        await login(loginUser);
+        const user = await login(loginUser);
+        //トークンを保存。各所で使えるようにする
+        localStorage.setItem("token", user.token);
+        
         //ユーザー登録が完了したらログイン画面に行く
         router.push("/mypage")
     } catch(error:any) {

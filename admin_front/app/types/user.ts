@@ -11,4 +11,5 @@ export interface UserUpdateRequest {
 export interface UserResponse {
   id: number;
   name: string;
+  token: string;
 }
