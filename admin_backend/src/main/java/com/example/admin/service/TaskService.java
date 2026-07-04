@@ -41,7 +41,6 @@ public class TaskService {
 
 	    response.setId(category.getId());
 	    response.setTitle(category.getTitle());
-
 	    return response;
 	}
 	
@@ -51,6 +50,13 @@ public class TaskService {
 		return tasks.stream()
 				.map(this::convertToResponse)
 				.toList();
+	}
+	
+	public TaskResponse findByIdAndUser_IdAndDeletedFalse(Long id) {
+		Long userId = 1L;
+		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)
+				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
+		return convertToResponse(task);
 	}
 	
 	public TaskResponse create(TaskCreateRequest request) {

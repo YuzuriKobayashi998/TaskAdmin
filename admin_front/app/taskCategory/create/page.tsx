@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TaskCategoryCreateRequest } from "@/app/types/taskCategory";
 import { createTaskCategory } from "@/app/services/taskCategoryApi";
+import Link from "next/link";
 
 export default function CreateUserPage(){
     const router = useRouter();
@@ -12,7 +13,7 @@ const [category, setCategory] = useState<TaskCategoryCreateRequest>({
     title:"",
     description:"",
     isFinished:false,
-    dueDate:new Date(),
+    dueDate:"",
 });
 const handleSubmit = async (
     e:React.SyntheticEvent<HTMLFormElement>
@@ -46,4 +47,68 @@ const handleSubmit = async (
         alert(error.message);
     }
 };
+
+return (
+  <div>
+    <h1>カテゴリ登録</h1>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>カテゴリ名</label>
+        <br />
+        <input
+          type="text"
+          value={category.title}
+          required
+          onChange={(e) =>
+            setCategory({
+              ...category,
+              title: e.target.value,
+            })
+          }
+        />
+      </div>
+      <br />
+      <div>
+        <label>期限日</label>
+        <br />
+        <input
+          type="date"
+          value={category.dueDate}
+          required
+          onChange={(e) =>
+            setCategory({
+              ...category,
+              dueDate: e.target.value,
+            })
+          }
+        />
+      </div>
+
+      <br />
+      <div>
+        <label>コメント</label>
+        <br />
+        <textarea
+          value={category.description}
+          required
+          onChange={(e) =>
+            setCategory({
+              ...category,
+              description: e.target.value,
+            })
+          }
+        />
+      </div>
+      <br />
+      
+      <button type="submit">作成</button>
+    </form>
+      <p>
+        <Link href="/user/mypage">
+          戻る
+        </Link>
+      </p>
+  </div>
+
+);
 }

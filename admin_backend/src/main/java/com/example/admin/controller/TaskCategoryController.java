@@ -45,4 +45,8 @@ public class TaskCategoryController {
 	public void delete(@PathVariable Long id) {
 		taskCategoryService.delete(id);
 	}
+	@GetMapping("/{id}")
+	public TaskCategoryResponse findByIdAndUser_IdAndDeletedFalse(@PathVariable Long id) {
+	    return taskCategoryService.findByIdAndUser_IdAndDeletedFalse(id);
+	}
 }

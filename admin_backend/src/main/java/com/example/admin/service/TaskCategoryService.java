@@ -40,6 +40,13 @@ public class TaskCategoryService {
 	    .toList();
 	}
 	
+	public TaskCategoryResponse findByIdAndUser_IdAndDeletedFalse(Long id) {
+		Long userId = 1L;
+		TaskCategory taskCategory = taskCategoryRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)
+				.orElseThrow(() -> new RuntimeException("タスクカテゴリが存在しません"));
+		return convertToResponse(taskCategory);
+	}
+	
 	public TaskCategoryResponse create(TaskCategoryCreateRequest request) {
 		Long userId = 1L;//認証情報から取得
 		User user = userRepository.findById(userId)

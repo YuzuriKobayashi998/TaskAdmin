@@ -2,23 +2,23 @@ import { UserResponse } from "./user";
 
 export interface TaskCategoryCreateRequest {
   title: string;
-  description: String;
+  description: string;
   isFinished: Boolean;
-  dueDate: Date;
+  dueDate: string;
 }
 
 export interface TaskCategoryUpdateRequest {
   title: string;
-  description: String;
+  description: string;
   isFinished: Boolean;
-  dueDate: Date;
+  dueDate: string;
 }
 
 export interface TaskCategoryResponse {
   id: number;
   title: string;
-  description: String;
+  description: string;
   isFinished: Boolean;
-  dueDate: Date;
+  dueDate: string;
   user: UserResponse;
 }

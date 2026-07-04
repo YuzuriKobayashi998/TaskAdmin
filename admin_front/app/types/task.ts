@@ -15,7 +15,7 @@ export interface TaskUpdateRequest {
   startDate: string;
   endDate: string;
   priority: number;
-  finished: boolean;
+  isFinished: boolean;
   taskCategoryId: number;
 }
 
