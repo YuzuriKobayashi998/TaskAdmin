@@ -28,6 +28,9 @@ public class TaskCategoryService {
 		TaskCategoryResponse response = new TaskCategoryResponse();
 		response.setId(taskCategory.getId());
 		response.setTitle(taskCategory.getTitle());
+		response.setIsFinished(taskCategory.getIsFinished());
+		response.setDueDate(taskCategory.getDueDate());
+		response.setDescription(taskCategory.getDescription());
 		return response;
 	}
 	

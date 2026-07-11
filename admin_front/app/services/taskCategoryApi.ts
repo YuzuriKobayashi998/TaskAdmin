@@ -74,3 +74,18 @@ export async function deleteTaskCategory(
     throw new Error("カテゴリの削除に失敗しました");
   }
 }
+
+export async function getTaskCategoryById(
+  token: string,
+  id: number
+): Promise<TaskCategoryResponse> {
+  const response = await fetch(`${API_URL}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error("タスクの取得に失敗しました");
+  }
+  return response.json();
+}

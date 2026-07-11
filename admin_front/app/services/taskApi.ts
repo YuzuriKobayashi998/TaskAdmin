@@ -74,3 +74,18 @@ export async function deleteTask(
     throw new Error("タスクの削除に失敗しました");
   }
 }
+
+export async function getTaskById(
+  token: string,
+  id: number
+): Promise<TaskResponse> {
+  const response = await fetch(`${API_URL}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error("タスクの取得に失敗しました");
+  }
+  return response.json();
+}

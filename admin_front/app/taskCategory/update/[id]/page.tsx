@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { getTaskById, updateTask } from "@/app/services/taskApi";
-import { TaskUpdateRequest } from "@/app/types/task";
+import { getTaskCategoryById, updateTaskCategory } from "@/app/services/taskCategoryApi";
+import { TaskCategoryUpdateRequest } from "@/app/types/taskCategory";
 
 export default function UpdateTaskPage() {
   const router = useRouter();
@@ -12,13 +13,11 @@ export default function UpdateTaskPage() {
 
   const id = Number(params.id);
 
-  const [task, setTask] = useState<TaskUpdateRequest>({
-    title: "",
-    startDate: "",
-    endDate: "",
-    isFinished: false,
-    priority: 0,
-    taskCategoryId: 0,
+  const [category, setCategory] = useState<TaskCategoryUpdateRequest>({
+    title:"",
+    description:"",
+    isFinished:false,
+    dueDate: "",
   });
 
   // 画面表示時にタスクを取得
@@ -33,14 +32,12 @@ export default function UpdateTaskPage() {
       }
 
       try {
-        const data = await getTaskById(token, id);
-        setTask({
+        const data = await getTaskCategoryById(token, id);
+        setCategory({
           title: data.title,
-          startDate: data.startDate,
-          endDate: data.endDate,
+          description: data.description,
           isFinished: data.isFinished,
-          priority: data.priority,
-          taskCategoryId: data.taskCategory.id,
+          dueDate: data.dueDate,
         })
       } catch (error) {
         console.error(error);
@@ -57,16 +54,12 @@ export default function UpdateTaskPage() {
   ) => {
     e.preventDefault();
 
-    if (!task.title) {
+    if (!category.title) {
       alert("タイトルを入力してください");
       return;
     }
-    if (!task.startDate) {
-      alert("開始日を入力してください");
-      return;
-    }
-    if (!task.priority) {
-      alert("優先度を入力してください");
+    if (!category.dueDate) {
+      alert("期限日を入力してください");
       return;
     }
 
@@ -79,10 +72,10 @@ export default function UpdateTaskPage() {
         return;
       }
 
-      await updateTask(token, id, task);
+      await updateTaskCategory(token, id, category);
 
       alert("タスクの更新が完了しました");
-      router.push("/task");
+      router.push("/readAll");
     } catch (error: any) {
       console.error(error);
       alert(error.message);
@@ -90,66 +83,66 @@ export default function UpdateTaskPage() {
   };
 
   return (
+  <div>
+    <h1>カテゴリ編集</h1>
     <form onSubmit={handleSubmit}>
       <div>
-        <label>タイトル</label>
+        <label>カテゴリ名</label>
+        <br />
         <input
           type="text"
-          value={task.title}
+          value={category.title}
+          required
           onChange={(e) =>
-            setTask({
-              ...task,
+            setCategory({
+              ...category,
               title: e.target.value,
             })
           }
         />
       </div>
-
+      <br />
       <div>
-        <label>開始日</label>
+        <label>期限日</label>
+        <br />
         <input
           type="date"
-          value={task.startDate}
+          value={category.dueDate}
+          required
           onChange={(e) =>
-            setTask({
-              ...task,
-              startDate: e.target.value,
+            setCategory({
+              ...category,
+              dueDate: e.target.value,
             })
           }
         />
       </div>
 
+      <br />
       <div>
-        <label>終了日</label>
-        <input
-          type="date"
-          value={task.endDate}
+        <label>コメント</label>
+        <br />
+        <textarea
+          value={category.description}
+          required
           onChange={(e) =>
-            setTask({
-              ...task,
-              endDate: e.target.value,
+            setCategory({
+              ...category,
+              description: e.target.value,
             })
           }
         />
       </div>
-
-      <div>
-        <label>優先度</label>
-        <input
-          type="number"
-          value={task.priority}
-          onChange={(e) =>
-            setTask({
-              ...task,
-              priority: Number(e.target.value),
-            })
-          }
-        />
-      </div>
-
-      <button type="submit">
-        更新
-      </button>
+      <br />
+      
+      <button type="submit">作成</button>
     </form>
-  );
+      <p>
+        <Link href="/user/mypage">
+          戻る
+        </Link>
+      </p>
+  </div>
+
+);
 }

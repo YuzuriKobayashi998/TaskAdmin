@@ -25,8 +25,7 @@ export interface TaskResponse {
   startDate: string;
   endDate: string;
   priority: number;
-  finished: boolean;
+  isFinished: boolean;
   user: UserResponse;
   taskCategory: TaskCategoryResponse;
-  createdDate: string;
 }
