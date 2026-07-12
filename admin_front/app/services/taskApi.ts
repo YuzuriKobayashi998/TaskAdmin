@@ -89,3 +89,21 @@ export async function getTaskById(
   }
   return response.json();
 }
+
+export async function getTasksByCategory(
+  token: string,
+  taskCategoryId: number
+): Promise<TaskResponse[]> {
+  const response = await fetch(
+    `${API_URL}/readAll/${taskCategoryId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  if (!response.ok) {
+    throw new Error("タスク一覧の取得に失敗しました");
+  }
+  return await response.json();
+}

@@ -72,7 +72,7 @@ public class TaskService {
 		task.setStartDate(request.getStartDate());
 		task.setEndDate(request.getEndDate());
 		task.setPriority(request.getPriority());
-		task.setFinished(request.getFinished());
+		task.setFinished(request.getIsFinished());
 		task.setUser(user);
 		task.setCategory(taskCategory);
 		
@@ -101,8 +101,8 @@ public class TaskService {
 		    task.setPriority(request.getPriority());
 		}
 
-		if(request.getFinished() != null) {
-		    task.setFinished(request.getFinished());
+		if(request.getIsFinished() != null) {
+		    task.setFinished(request.getIsFinished());
 		}
 		taskRepository.save(task);
 		return convertToResponse(task);

@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TaskController {
 	private final TaskService taskService;
-	@GetMapping
+	@GetMapping("readAll/{taskCaLongId}")
 	public List<TaskResponse> findAll(@PathVariable Long taskCaLongId){
 		return taskService.findAllByTaskCategoryIdAndCurrentUser(taskCaLongId);
 	}

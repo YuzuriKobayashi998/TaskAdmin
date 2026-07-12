@@ -58,6 +58,8 @@ public class TaskCategoryService {
 		TaskCategory taskCategory = new TaskCategory();
 		taskCategory.setTitle(request.getTitle());
 		taskCategory.setUser(user);
+		taskCategory.setIsFinished(request.getIsFinished());
+		taskCategory.setDueDate(request.getDueDate());
 		
 		taskCategoryRepository.save(taskCategory);
 		return convertToResponse(taskCategory);

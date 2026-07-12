@@ -25,7 +25,7 @@ public class TaskUpdateRequest {
 		@Max(3)
 		private Integer priority;
 		
-		private Boolean finished;
+		private Boolean isFinished;
 		
 		private Long taskCategoryId;
 	}

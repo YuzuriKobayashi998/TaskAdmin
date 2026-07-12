@@ -31,7 +31,7 @@ public class TaskCreateRequest {
 	private Integer priority;
 	
 	
-	private Boolean finished;
+	private Boolean isFinished;
 	
 	@NotNull
 	private Long taskCategoryId;
