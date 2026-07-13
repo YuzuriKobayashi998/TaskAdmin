@@ -41,7 +41,7 @@ const handleSubmit = async (
         await createTaskCategory(token, category);
         alert("カテゴリの登録が完了しました");
         //ユーザー登録が完了したらログイン画面に行く
-        router.push("/user/login")
+        router.push("/user/mypage")
     } catch(error:any) {
         console.error(error);
         alert(error.message);

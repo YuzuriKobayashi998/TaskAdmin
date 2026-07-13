@@ -2,6 +2,8 @@ package com.example.admin.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.admin.dto.task.TaskCreateRequest;
@@ -53,7 +55,16 @@ public class TaskService {
 	}
 	
 	public TaskResponse findByIdAndUser_IdAndDeletedFalse(Long id) {
-		Long userId = 1L;
+	    Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User user = userRepository
+	            .findByNameAndDeletedFalse(username)
+	            .orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
+		System.out.println("authentication = " + authentication);
+		System.out.println("username = " + authentication.getName());
+	    Long userId = user.getId();
+	    
 		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)
 				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
 		return convertToResponse(task);
@@ -83,6 +94,10 @@ public class TaskService {
 	
 	public TaskResponse update(Long taskId, TaskUpdateRequest request) {
 		Long userId = 1L;
+		Authentication authentication =
+		        SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("authentication = " + authentication);
+		System.out.println("username = " + authentication.getName());
 		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse (taskId, userId)
 				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
 		if(request.getTitle() != null) {

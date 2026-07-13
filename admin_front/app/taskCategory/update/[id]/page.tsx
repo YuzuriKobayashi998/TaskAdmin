@@ -75,7 +75,7 @@ export default function UpdateTaskPage() {
       await updateTaskCategory(token, id, category);
 
       alert("タスクの更新が完了しました");
-      router.push("/readAll");
+      router.push("/user/mypage");
     } catch (error: any) {
       console.error(error);
       alert(error.message);

@@ -31,7 +31,7 @@ const handleSubmit = async (
         localStorage.setItem("token", user.token);
         
         //ユーザー登録が完了したらログイン画面に行く
-        router.push("/mypage")
+        router.push("/user/mypage")
     } catch(error:any) {
         console.error(error);
         alert(error.message);

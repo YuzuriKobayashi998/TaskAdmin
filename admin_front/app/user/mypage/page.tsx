@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { getTaskCategories } from "@/app/services/taskCategoryApi"
 import { TaskCategoryResponse } from "@/app/types/taskCategory"
+import Link from "next/link";
 
 export default function Mypage() {
     const [categories, setCategories] = useState<TaskCategoryResponse[]>([]);
@@ -21,6 +22,10 @@ export default function Mypage() {
     return (
   <div>
     <h1>マイページ</h1>
+    <button
+      onClick={() => router.push("/taskCategory/create")}
+      className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
+    >カテゴリ作成</button>
     {categories.map((category) => (
       <div
         key={category.id}
@@ -29,6 +34,10 @@ export default function Mypage() {
       >
         <h2>{category.title}</h2>
         <p>{category.description}</p>
+          <Link href={`/taskCategory/update/${category.id}`}
+          onClick={(e) => e.stopPropagation()}>
+          編集
+        </Link>
       </div>
     ))}
   </div>

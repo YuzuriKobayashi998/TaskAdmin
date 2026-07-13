@@ -2,6 +2,8 @@ package com.example.admin.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,14 +68,25 @@ public class TaskCategoryService {
 	}
 	
 	public TaskCategoryResponse update(Long id, TaskCategoryUpdateRequest request) {
-		Long userId = 1L;
-		
+		System.out.println("★★★★ メソッド開始 ★★★★");
+	    Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+	    System.out.println("authentication = " + authentication);
+	    System.out.println("principal = " + authentication.getPrincipal());
+	    System.out.println("name = " + authentication.getName());
+	    
+	    User loginUser = (User) authentication.getPrincipal();
+
+	    Long userId = loginUser.getId();
+	    System.out.println("id = " + id);
+	    System.out.println("userId = " + userId);
+		    
 		TaskCategory taskCategory =  taskCategoryRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)
 				.orElseThrow(() -> new RuntimeException("タスクカテゴリが存在しません"));
 		if(request.getTitle() != null && !request.getTitle().isBlank()) {
 			taskCategory.setTitle(request.getTitle());
 		}
-		
+		System.out.println(authentication.getName());
 		taskCategoryRepository.save(taskCategory);
 		return convertToResponse(taskCategory);
 	}
