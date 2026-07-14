@@ -37,7 +37,16 @@ public class TaskCategoryService {
 	}
 	
 	public List<TaskCategoryResponse>  findAllByTaskCategoryIdAndCurrentUser() {
-		Long userId = 1L;
+		Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();	
+//	    String username = authentication.getName();
+//	    User user = userRepository
+//	            .findByNameAndDeletedFalse(username)
+//	            .orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
+	    Long userId = user.getId();
+	    System.out.println("userId = " + user.getId());
+	    System.out.println("userName = " + user.getName());
 		List<TaskCategory> taskCategories = taskCategoryRepository.findByUser_IdAndDeletedFalse(userId);
 		//リストを１件ずつconvertに変換して再度リスト化している
 		return taskCategories.stream()
@@ -46,16 +55,20 @@ public class TaskCategoryService {
 	}
 	
 	public TaskCategoryResponse findByIdAndUser_IdAndDeletedFalse(Long id) {
-		Long userId = 1L;
+		Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();	
+	    Long userId = user.getId();
 		TaskCategory taskCategory = taskCategoryRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)
 				.orElseThrow(() -> new RuntimeException("タスクカテゴリが存在しません"));
 		return convertToResponse(taskCategory);
 	}
 	
 	public TaskCategoryResponse create(TaskCategoryCreateRequest request) {
-		Long userId = 1L;//認証情報から取得
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
+		Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();	
+	    Long userId = user.getId();
 		
 		TaskCategory taskCategory = new TaskCategory();
 		taskCategory.setTitle(request.getTitle());
@@ -68,18 +81,10 @@ public class TaskCategoryService {
 	}
 	
 	public TaskCategoryResponse update(Long id, TaskCategoryUpdateRequest request) {
-		System.out.println("★★★★ メソッド開始 ★★★★");
 	    Authentication authentication =
 	            SecurityContextHolder.getContext().getAuthentication();
-	    System.out.println("authentication = " + authentication);
-	    System.out.println("principal = " + authentication.getPrincipal());
-	    System.out.println("name = " + authentication.getName());
-	    
 	    User loginUser = (User) authentication.getPrincipal();
-
 	    Long userId = loginUser.getId();
-	    System.out.println("id = " + id);
-	    System.out.println("userId = " + userId);
 		    
 		TaskCategory taskCategory =  taskCategoryRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)
 				.orElseThrow(() -> new RuntimeException("タスクカテゴリが存在しません"));

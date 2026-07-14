@@ -30,9 +30,13 @@ const handleSubmit = async (
         alert("ユーザーを登録しました");
         //ユーザー登録が完了したらログイン画面に行く
         router.push("/user/login")
-    } catch(error:any) {
+    } catch(error:unknown) {
         console.error(error);
-        alert(error.message);
+        if(error instanceof Error) {
+            alert(error.message);
+        } else {
+           alert("ユーザー登録に失敗しました");
+        }
     }
 };
 

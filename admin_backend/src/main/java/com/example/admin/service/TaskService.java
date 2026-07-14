@@ -47,7 +47,13 @@ public class TaskService {
 	}
 	
 	public List<TaskResponse> findAllByTaskCategoryIdAndCurrentUser(Long taskCategoryId) {
-		Long userId = 1L;
+		Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+	    String username = authentication.getName();
+	    User user = userRepository
+	            .findByNameAndDeletedFalse(username)
+	            .orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
+	    Long userId = user.getId();
 		List<Task> tasks = taskRepository.findByCategory_IdAndUser_IdAndDeletedFalse(taskCategoryId,userId);
 		return tasks.stream()
 				.map(this::convertToResponse)
@@ -61,8 +67,8 @@ public class TaskService {
 	    User user = userRepository
 	            .findByNameAndDeletedFalse(username)
 	            .orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
-		System.out.println("authentication = " + authentication);
-		System.out.println("username = " + authentication.getName());
+//		System.out.println("authentication = " + authentication);
+//		System.out.println("username = " + authentication.getName());
 	    Long userId = user.getId();
 	    
 		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)

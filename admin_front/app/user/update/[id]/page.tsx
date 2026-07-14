@@ -72,9 +72,13 @@ export default function UpdateUserPage() {
       alert("ユーザー情報を更新しました");
 
       router.push("/user/mypage");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      alert(error.message);
+      if(error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("ユーザー情報更新に失敗しました");
+      }
     }
   };
 

@@ -20,5 +20,4 @@ export interface TaskCategoryResponse {
   description: string;
   isFinished: boolean;
   dueDate: string;
-  user: UserResponse;
 }

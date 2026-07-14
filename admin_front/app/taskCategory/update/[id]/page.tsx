@@ -33,9 +33,10 @@ export default function UpdateTaskPage() {
 
       try {
         const data = await getTaskCategoryById(token, id);
+        console.log(data);
         setCategory({
           title: data.title,
-          description: data.description,
+          description: data.description ?? "",
           isFinished: data.isFinished,
           dueDate: data.dueDate,
         })
@@ -76,9 +77,13 @@ export default function UpdateTaskPage() {
 
       alert("タスクの更新が完了しました");
       router.push("/user/mypage");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      alert(error.message);
+          if(error instanceof Error) {
+            alert(error.message);
+        } else {
+           alert("カテゴリ更新に失敗しました");
+        }
     }
   };
 
@@ -124,7 +129,6 @@ export default function UpdateTaskPage() {
         <br />
         <textarea
           value={category.description}
-          required
           onChange={(e) =>
             setCategory({
               ...category,

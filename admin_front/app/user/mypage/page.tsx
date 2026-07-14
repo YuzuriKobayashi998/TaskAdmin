@@ -9,6 +9,11 @@ import Link from "next/link";
 export default function Mypage() {
     const [categories, setCategories] = useState<TaskCategoryResponse[]>([]);
     const router = useRouter();
+    //ログアウト処理のメソッド
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        router.push("/user/login");
+    }
     useEffect(() => {
         const token = localStorage.getItem("token");
          if(!token) return;
@@ -26,6 +31,11 @@ export default function Mypage() {
       onClick={() => router.push("/taskCategory/create")}
       className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
     >カテゴリ作成</button>
+    <button
+      onClick={handleLogout}
+      className="mb-4 ml-4 rounded bg-red-500 px-4 py-2 text-white"
+    >ログアウト</button>
+    <h2>カテゴリ一覧</h2>
     {categories.map((category) => (
       <div
         key={category.id}
