@@ -38,8 +38,10 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         String token = authHeader.substring(7);
+        System.out.println("validate = " + jwtUtil.validateToken(token));
         if (jwtUtil.validateToken(token)) {
             String username = jwtUtil.extractUsername(token);
+            System.out.println("username = " + username);
             User user = userRepository
                     .findByNameAndDeletedFalse(username)
                     .orElse(null);

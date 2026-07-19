@@ -94,7 +94,6 @@ return (
         <br />
         <textarea
           value={category.description}
-          required
           onChange={(e) =>
             setCategory({
               ...category,

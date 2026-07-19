@@ -139,7 +139,7 @@ export default function UpdateTaskPage() {
       </div>
       <br />
       
-      <button type="submit">作成</button>
+      <button type="submit">更新</button>
     </form>
       <p>
         <Link href="/user/mypage">

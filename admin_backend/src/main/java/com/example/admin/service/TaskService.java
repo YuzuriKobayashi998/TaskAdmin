@@ -40,7 +40,6 @@ public class TaskService {
 	
 	private TaskCategoryResponse convertToResponse(TaskCategory category) {
 	    TaskCategoryResponse response = new TaskCategoryResponse();
-
 	    response.setId(category.getId());
 	    response.setTitle(category.getTitle());
 	    return response;
@@ -49,10 +48,7 @@ public class TaskService {
 	public List<TaskResponse> findAllByTaskCategoryIdAndCurrentUser(Long taskCategoryId) {
 		Authentication authentication =
 	            SecurityContextHolder.getContext().getAuthentication();
-	    String username = authentication.getName();
-	    User user = userRepository
-	            .findByNameAndDeletedFalse(username)
-	            .orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
+	    User user = (User) authentication.getPrincipal();
 	    Long userId = user.getId();
 		List<Task> tasks = taskRepository.findByCategory_IdAndUser_IdAndDeletedFalse(taskCategoryId,userId);
 		return tasks.stream()
@@ -61,14 +57,9 @@ public class TaskService {
 	}
 	
 	public TaskResponse findByIdAndUser_IdAndDeletedFalse(Long id) {
-	    Authentication authentication =
+		Authentication authentication =
 	            SecurityContextHolder.getContext().getAuthentication();
-	    String username = authentication.getName();
-	    User user = userRepository
-	            .findByNameAndDeletedFalse(username)
-	            .orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
-//		System.out.println("authentication = " + authentication);
-//		System.out.println("username = " + authentication.getName());
+	    User user = (User) authentication.getPrincipal();
 	    Long userId = user.getId();
 	    
 		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)
@@ -77,51 +68,44 @@ public class TaskService {
 	}
 	
 	public TaskResponse create(TaskCreateRequest request) {
-		Long userId = 1L;
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
-		
-		TaskCategory taskCategory = taskCategoryRepository.findByIdAndUser_IdAndDeletedFalse(request.getTaskCategoryId(), userId)
-				.orElseThrow(() -> new RuntimeException("タスクカテゴリが存在しません"));
-		
-		Task task = new Task();
-		task.setTitle(request.getTitle());
-		task.setStartDate(request.getStartDate());
-		task.setEndDate(request.getEndDate());
-		task.setPriority(request.getPriority());
-		task.setFinished(request.getIsFinished());
-		task.setUser(user);
-		task.setCategory(taskCategory);
-		
-		taskRepository.save(task);
-		return convertToResponse(task);
-		
+	    Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    Long userId = user.getId();
+	    TaskCategory taskCategory = taskCategoryRepository
+	            .findByIdAndUser_IdAndDeletedFalse(request.getTaskCategoryId(), userId)
+	            .orElseThrow(() -> new RuntimeException("タスクカテゴリが存在しません"));
+	    Task task = new Task();
+	    task.setTitle(request.getTitle());
+	    task.setStartDate(request.getStartDate());
+	    task.setEndDate(request.getEndDate());
+	    task.setPriority(request.getPriority());
+	    task.setFinished(request.getIsFinished());
+	    task.setUser(user);
+	    task.setCategory(taskCategory);
+	    taskRepository.save(task);
+	    return convertToResponse(task);
 	}
 	
 	public TaskResponse update(Long taskId, TaskUpdateRequest request) {
-		Long userId = 1L;
-		Authentication authentication =
-		        SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("authentication = " + authentication);
-		System.out.println("username = " + authentication.getName());
+		 Authentication authentication =
+		            SecurityContextHolder.getContext().getAuthentication();
+		    User user = (User) authentication.getPrincipal();
+		    Long userId = user.getId();
 		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse (taskId, userId)
 				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
 		if(request.getTitle() != null) {
 		    task.setTitle(request.getTitle());
 		}
-		
 		if(request.getStartDate() != null) {
 		    task.setStartDate(request.getStartDate());
 		}
-
 		if(request.getEndDate() != null) {
 		    task.setEndDate(request.getEndDate());
 		}
-
 		if(request.getPriority() != null) {
 		    task.setPriority(request.getPriority());
 		}
-
 		if(request.getIsFinished() != null) {
 		    task.setFinished(request.getIsFinished());
 		}
@@ -131,7 +115,10 @@ public class TaskService {
 	}
 	
 	public void delete(Long taskId) {
-		Long userId = 1L;
+		 Authentication authentication =
+		            SecurityContextHolder.getContext().getAuthentication();
+		    User user = (User) authentication.getPrincipal();
+		    Long userId = user.getId();
 		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse (taskId, userId)
 				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
 		task.setDeleted(true);

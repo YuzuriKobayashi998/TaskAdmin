@@ -83,9 +83,13 @@ export default function UpdateTaskPage() {
 
       alert("タスクの更新が完了しました");
       router.push("/task");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      alert(error.message);
+      if(error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("タスク更新に失敗しました");
+      }
     }
   };
 

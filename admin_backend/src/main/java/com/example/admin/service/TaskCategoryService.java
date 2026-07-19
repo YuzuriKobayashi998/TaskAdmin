@@ -45,8 +45,6 @@ public class TaskCategoryService {
 //	            .findByNameAndDeletedFalse(username)
 //	            .orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
 	    Long userId = user.getId();
-	    System.out.println("userId = " + user.getId());
-	    System.out.println("userName = " + user.getName());
 		List<TaskCategory> taskCategories = taskCategoryRepository.findByUser_IdAndDeletedFalse(userId);
 		//リストを１件ずつconvertに変換して再度リスト化している
 		return taskCategories.stream()
@@ -73,6 +71,7 @@ public class TaskCategoryService {
 		TaskCategory taskCategory = new TaskCategory();
 		taskCategory.setTitle(request.getTitle());
 		taskCategory.setUser(user);
+		taskCategory.setDescription(request.getDescription());
 		taskCategory.setIsFinished(request.getIsFinished());
 		taskCategory.setDueDate(request.getDueDate());
 		
@@ -91,6 +90,10 @@ public class TaskCategoryService {
 		if(request.getTitle() != null && !request.getTitle().isBlank()) {
 			taskCategory.setTitle(request.getTitle());
 		}
+		if(request.getDueDate() != null) {
+			taskCategory.setDueDate(request.getDueDate());
+		}
+		taskCategory.setDescription(request.getDescription());
 		System.out.println(authentication.getName());
 		taskCategoryRepository.save(taskCategory);
 		return convertToResponse(taskCategory);
@@ -98,7 +101,10 @@ public class TaskCategoryService {
 	
 	@Transactional
 	public void delete(Long id) {
-		Long userId = 1L;
+	    Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+	    User loginUser = (User) authentication.getPrincipal();
+	    Long userId = loginUser.getId();
 		
 		TaskCategory taskCategory = taskCategoryRepository.findByIdAndUser_IdAndDeletedFalse(id, userId)
 				.orElseThrow(() -> new RuntimeException("タスクカテゴリが存在しません"));

@@ -1,7 +1,8 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
+import { deleteTaskCategory } from "@/app/services/taskCategoryApi"
 import { getTaskCategories } from "@/app/services/taskCategoryApi"
 import { TaskCategoryResponse } from "@/app/types/taskCategory"
 import Link from "next/link";
@@ -14,15 +15,47 @@ export default function Mypage() {
         localStorage.removeItem("token");
         router.push("/user/login");
     }
+
+    const fetchCategories = useCallback(async () => {
+      const token =localStorage.getItem("token");
+      if (!token) {
+        alert("ログインしてください");
+        router.push("/user/login");
+        return;
+      }
+      try {
+        const data = await getTaskCategories(token);
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+        alert("カテゴリの取得に失敗しました");
+      }
+    }, [router]);
+
     useEffect(() => {
-        const token = localStorage.getItem("token");
-         if(!token) return;
-         //tokenを渡してAPIからカテゴリ一覧を取得
-         getTaskCategories(token)
-         //取得したデータをcategoriesに保存
-            .then(setCategories)
-            .catch(console.error);
-    }, []);
+      fetchCategories();
+    }, [fetchCategories]);
+
+    //タスク削除処理のメソッド
+    const handleDelete = async (id: number) => {
+  if (!confirm("このタスクを削除しますか？")) {
+    return;
+  }
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("ログインしてください");
+      return;
+    }
+    await deleteTaskCategory(token, id);
+    alert("削除しました");
+    // 一覧を再取得
+        await fetchCategories();
+  } catch (error) {
+    console.error(error);
+    alert("削除に失敗しました");
+  }
+};
 
     return (
   <div>
@@ -43,11 +76,20 @@ export default function Mypage() {
         className="border rounded-lg p-4 mb-3 cursor-pointer"
       >
         <h2>{category.title}</h2>
+        <p>{category.dueDate}</p>
         <p>{category.description}</p>
           <Link href={`/taskCategory/update/${category.id}`}
           onClick={(e) => e.stopPropagation()}>
           編集
         </Link>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete(category.id);
+          }}
+        >
+          🗑️
+        </button>
       </div>
     ))}
   </div>

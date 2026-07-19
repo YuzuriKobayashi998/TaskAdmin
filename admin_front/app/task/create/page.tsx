@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TaskCreateRequest } from "@/app/types/task";
@@ -25,8 +24,8 @@ const [categories, setCategories] = useState<TaskCategoryResponse[]>([]);
 useEffect(() => {
   const fetchCategories = async () => {
     const token = localStorage.getItem("token");
+    console.log(token);
     if (!token) return;
-
     const data = await getTaskCategories(token);
     setCategories(data);
   };
@@ -56,7 +55,7 @@ const handleSubmit = async (
     try {
       console.log(task);
       const token = localStorage.getItem("token");
-
+      console.log("token", token);
       if(!token) {
         alert("ログインしてください");
         router.push("user/login");
@@ -65,10 +64,10 @@ const handleSubmit = async (
         await createTask(token, task);
         alert("タスクの登録が完了しました");
         //ユーザー登録が完了したらログイン画面に行く
-        router.push("/user/login")
-    } catch(error:any) {
+        router.push(`/task/readAll/${task.taskCategoryId}`);
+    } catch(error:unknown) {
         console.error(error);
-        alert(error.message);
+        alert((error as Error).message);
     }
 };
 return (
@@ -166,9 +165,9 @@ return (
       <button type="submit">登録</button>
     </form>
           <p>
-        <Link href="/task/readAll">
-          ログイン画面に戻る
-        </Link>
+        <button type="button" onClick={() => router.back()}>
+        タスク一覧に戻る  
+        </button>
       </p>
   </div>
 

@@ -2,6 +2,7 @@ package com.example.admin.dto.task;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -18,10 +19,12 @@ public class TaskCreateRequest {
 	@NotBlank(message = "タイトルを記入してください")
 	private String title;
 	
+	@FutureOrPresent(message = "期限日は今日以降を入力してください")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "開始日を記入してください")
 	private LocalDate startDate;
 	
+	@FutureOrPresent(message = "期限日は今日以降を入力してください")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
 	
