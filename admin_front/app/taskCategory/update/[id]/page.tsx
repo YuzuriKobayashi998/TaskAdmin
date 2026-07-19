@@ -112,6 +112,7 @@ export default function UpdateTaskPage() {
         <br />
         <input
           type="date"
+          min={new Date().toISOString().split("T")[0]}
           value={category.dueDate}
           required
           onChange={(e) =>

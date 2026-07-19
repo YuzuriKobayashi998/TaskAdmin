@@ -82,7 +82,7 @@ export default function UpdateTaskPage() {
       await updateTask(token, id, task);
 
       alert("タスクの更新が完了しました");
-      router.push("/task");
+      router.push(`/task/readAll/${task.taskCategoryId}`);
     } catch (error: unknown) {
       console.error(error);
       if(error instanceof Error) {
@@ -93,13 +93,17 @@ export default function UpdateTaskPage() {
     }
   };
 
-  return (
+return (
+  <div>
+    <h1>タスク編集</h1>
     <form onSubmit={handleSubmit}>
       <div>
-        <label>タイトル</label>
+        <label>タスク名</label>
+        <br />
         <input
           type="text"
           value={task.title}
+          required
           onChange={(e) =>
             setTask({
               ...task,
@@ -108,12 +112,15 @@ export default function UpdateTaskPage() {
           }
         />
       </div>
-
+      <br />
       <div>
         <label>開始日</label>
+        <br />
         <input
           type="date"
+          min={new Date().toISOString().split("T")[0]}
           value={task.startDate}
+          required
           onChange={(e) =>
             setTask({
               ...task,
@@ -123,11 +130,16 @@ export default function UpdateTaskPage() {
         />
       </div>
 
+      <br />
+
       <div>
         <label>終了日</label>
+        <br />
         <input
           type="date"
+          min={new Date().toISOString().split("T")[0]}
           value={task.endDate}
+          required
           onChange={(e) =>
             setTask({
               ...task,
@@ -137,23 +149,32 @@ export default function UpdateTaskPage() {
         />
       </div>
 
-      <div>
+       <div>
         <label>優先度</label>
-        <input
-          type="number"
-          value={task.priority}
-          onChange={(e) =>
-            setTask({
-              ...task,
-              priority: Number(e.target.value),
-            })
-          }
-        />
+        <br />
+        <select
+        value={task.priority}
+        onChange={(e) => 
+          setTask({
+            ...task,
+            priority: Number(e.target.value)
+          })
+        }
+        >
+          <option value={0}>選択してください</option>
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+        </select>
       </div>
 
-      <button type="submit">
-        更新
-      </button>
+      <button type="submit">更新</button>
     </form>
-  );
+          <p>
+        <button type="button" onClick={() => router.back()}>
+        タスク一覧に戻る  
+        </button>
+      </p>
+  </div>
+);
 }

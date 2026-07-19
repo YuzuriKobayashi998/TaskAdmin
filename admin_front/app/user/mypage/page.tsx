@@ -9,6 +9,19 @@ import Link from "next/link";
 
 export default function Mypage() {
     const [categories, setCategories] = useState<TaskCategoryResponse[]>([]);
+    const [sortOrder, setSortOrder] = useState("asc");
+    const sortedCategories = [...categories].sort((a, b) => {
+  if (sortOrder === "asc") {
+    return (
+      new Date(a.dueDate).getTime() -
+      new Date(b.dueDate).getTime()
+    );
+  }
+  return (
+    new Date(b.dueDate).getTime() -
+    new Date(a.dueDate).getTime()
+  );
+});
     const router = useRouter();
     //ログアウト処理のメソッド
     const handleLogout = () => {
@@ -68,8 +81,20 @@ export default function Mypage() {
       onClick={handleLogout}
       className="mb-4 ml-4 rounded bg-red-500 px-4 py-2 text-white"
     >ログアウト</button>
+    <br />
+    <div>
+      <label>期限日順</label>
+      <select
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+      >
+        <option value="asc">昇順</option>
+        <option value="desc">降順</option>
+      </select>
+    </div>
+    <br />
     <h2>カテゴリ一覧</h2>
-    {categories.map((category) => (
+    {sortedCategories.map((category) => (
       <div
         key={category.id}
         onClick={() => router.push(`/task/readAll/${category.id}`)}

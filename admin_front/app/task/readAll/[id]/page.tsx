@@ -14,6 +14,21 @@ export default function ReadAllTaskPage() {
     const categoryId = Number(params.id);
 
     const [tasks, setTasks] = useState<TaskResponse[]>([]);
+    const [sortOrder, setSortOrder] = useState("asc");
+    const [sortType, setSortType] = useState("dueDate");
+    const sortedTasks = [...tasks].sort((a, b) => {
+  if (sortType === "dueDate") {
+    return sortOrder === "asc"
+      ? new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+      : new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+  }
+  if (sortType === "priority") {
+    return sortOrder === "asc"
+      ? a.priority - b.priority
+      : b.priority - a.priority;
+  }
+  return 0;
+});
 
     const fetchTasks = useCallback(async () => {
       const token = localStorage.getItem("token");
@@ -61,10 +76,31 @@ export default function ReadAllTaskPage() {
     <div>
       <h1>タスク一覧</h1>
       <button
-      onClick={() => router.push("/task/create")}
+      onClick={() => router.push(`/task/create/${categoryId}`)}
       className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
     >タスク作成</button>
-      {tasks.map((task) => (
+     <br />
+    <div className="mb-4">
+
+  <label>並び替え：</label>
+  <select
+    value={sortType}
+    onChange={(e) => setSortType(e.target.value)}
+  >
+    <option value="dueDate">期限日</option>
+    <option value="priority">優先度</option>
+  </select>
+  <select
+    value={sortOrder}
+    onChange={(e) => setSortOrder(e.target.value)}
+    className="ml-2"
+  >
+    <option value="asc">昇順</option>
+    <option value="desc">降順</option>
+  </select>
+</div>
+    <br />
+      {sortedTasks.map((task) => (
         <div
           key={task.id}
           className="border rounded-lg p-4 mb-3"
@@ -74,7 +110,7 @@ export default function ReadAllTaskPage() {
           <p>終了日：{task.endDate}</p>
           <p>優先度：{task.priority}</p>
 
-                    <Link href={`/taskCategory/update/${task.id}`}
+        <Link href={`/task/update/${task.id}`}
           onClick={(e) => e.stopPropagation()}>
           編集
         </Link>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { TaskCreateRequest } from "@/app/types/task";
 import { createTask } from "@/app/services/taskApi";
 import { getTaskCategories } from "@/app/services/taskCategoryApi";
@@ -9,6 +9,8 @@ import { TaskCategoryResponse } from "@/app/types/taskCategory";
 
 export default function CreateTaskPage(){
     const router = useRouter();
+    const params = useParams();
+    const categoryId = Number(params.id);
 
 const [task, setTask] = useState<TaskCreateRequest>({
     title:"",
@@ -16,7 +18,7 @@ const [task, setTask] = useState<TaskCreateRequest>({
     endDate:"",
     isFinished:false,
     priority:0,
-    taskCategoryId:0,
+    taskCategoryId:categoryId,
 });
 
 const [categories, setCategories] = useState<TaskCategoryResponse[]>([]);
@@ -95,6 +97,7 @@ return (
         <br />
         <input
           type="date"
+          min={new Date().toISOString().split("T")[0]}
           value={task.startDate}
           required
           onChange={(e) =>
@@ -113,6 +116,7 @@ return (
         <br />
         <input
           type="date"
+          min={new Date().toISOString().split("T")[0]}
           value={task.endDate}
           required
           onChange={(e) =>
@@ -143,25 +147,6 @@ return (
         </select>
       </div>
 
-      <div>
-        <select
-        value={task.taskCategoryId}
-          onChange={(e) =>
-          setTask({
-             ...task,
-            taskCategoryId: Number(e.target.value),
-            })
-          }
-          >
-          <option value="">カテゴリを選択</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-            {category.title}
-          </option>
-            ))}
-          </select>
-        </div>
-      
       <button type="submit">登録</button>
     </form>
           <p>
@@ -170,6 +155,5 @@ return (
         </button>
       </p>
   </div>
-
 );
 }
