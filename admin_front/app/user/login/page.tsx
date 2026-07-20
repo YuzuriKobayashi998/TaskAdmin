@@ -32,21 +32,26 @@ const handleSubmit = async (
         
         //ユーザー登録が完了したらログイン画面に行く
         router.push("/user/mypage")
-    } catch(error:any) {
+    } catch(error:unknown) {
         console.error(error);
-        alert(error.message);
+        if (error instanceof Error) {
+            alert(error.message);
+        } else {
+            alert("ログインに失敗しました");
+        }
     }
 };
 
 
 return (
-  <div>
-    <h1>ログイン</h1>
+  <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
+    <div className="mx-auto max-w-2xl rounded-xl bg-white p-8 shadow-md">
+    <h1 className="text-2xl font-bold mb-4">ログイン</h1>
     <form onSubmit={handleSubmit}>
       <div>
-        <label>ユーザー名</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">ユーザー名</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="text"
           value={loginUser.name}
           required
@@ -58,11 +63,10 @@ return (
           }
         />
       </div>
-      <br />
       <div>
-        <label>パスワード</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">パスワード</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="password"
           value={loginUser.password}
           required
@@ -74,17 +78,17 @@ return (
           }
         />
       </div>
-
-      <br />
-      
-      <button type="submit">ログイン</button>
+      <button type="submit" className="rounded bg-slate-500 px-4 py-2 text-white">
+        ログイン
+      </button>
     </form>
+    <br />
       <p>
         <Link href="/user/create">
           ユーザー登録はこちら
         </Link>
       </p>
   </div>
-
+</div>
 );
 }

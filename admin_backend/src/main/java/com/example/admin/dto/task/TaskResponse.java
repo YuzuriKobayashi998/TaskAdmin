@@ -22,7 +22,7 @@ public class TaskResponse {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
 	private Integer priority;
-	private Boolean finished;
+	private Boolean isFinished;
 	private UserResponse user;
 	private TaskCategoryResponse taskCategory;
 	private LocalDateTime createdDate;

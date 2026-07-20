@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -48,5 +49,9 @@ public class TaskCategoryController {
 	@GetMapping("/{id}")
 	public TaskCategoryResponse findByIdAndUser_IdAndDeletedFalse(@PathVariable Long id) {
 	    return taskCategoryService.findByIdAndUser_IdAndDeletedFalse(id);
+	}
+	@PatchMapping("/finish/{id}")
+	public TaskCategoryResponse finishTaskCategory(@PathVariable Long id) {
+			    return taskCategoryService.finishTaskCategory(id);
 	}
 }

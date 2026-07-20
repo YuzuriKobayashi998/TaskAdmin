@@ -1,7 +1,6 @@
 "use client"
 
-import Link from "next/link";
-import { deleteTask } from "@/app/services/taskApi";
+import { deleteTask, finishTask } from "@/app/services/taskApi";
 import { useEffect, useState, useCallback } from "react"
 import { useParams } from "next/navigation"
 import { useRouter } from "next/navigation"
@@ -16,19 +15,28 @@ export default function ReadAllTaskPage() {
     const [tasks, setTasks] = useState<TaskResponse[]>([]);
     const [sortOrder, setSortOrder] = useState("asc");
     const [sortType, setSortType] = useState("dueDate");
+     const handleLogout = () => {
+        localStorage.removeItem("token");
+        router.push("/user/login");
+    }
     const sortedTasks = [...tasks].sort((a, b) => {
-  if (sortType === "dueDate") {
-    return sortOrder === "asc"
-      ? new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-      : new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
-  }
-  if (sortType === "priority") {
-    return sortOrder === "asc"
-      ? a.priority - b.priority
-      : b.priority - a.priority;
-  }
-  return 0;
-});
+          // 完了済みを最後にする
+          if (a.isFinished !== b.isFinished) {
+            return a.isFinished ? 1 : -1;
+          }
+          // 並び替えの条件に応じてソートする
+        if (sortType === "dueDate") {
+          return sortOrder === "asc"
+            ? new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+            : new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+        }
+        if (sortType === "priority") {
+          return sortOrder === "asc"
+            ? a.priority - b.priority
+            : b.priority - a.priority;
+        }
+        return 0;
+      });
 
     const fetchTasks = useCallback(async () => {
       const token = localStorage.getItem("token");
@@ -46,11 +54,29 @@ export default function ReadAllTaskPage() {
       }
     }, [categoryId, router]);
 
-
     useEffect(() => {
       fetchTasks();
     }, [fetchTasks]);
-    
+
+    const handleFinish = async (id: number) => {
+      if (!confirm("ステータスを変更しますか？")) {
+        return;
+      }
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("ログインしてください");
+          return;
+        }
+        await finishTask(token, id);
+        alert("完了しました");
+        // 一覧を再取得
+        await fetchTasks();
+      } catch (error) {
+        console.error(error);
+        alert("完了に失敗しました");
+      }
+    };
      const handleDelete = async (id: number) => {
       if (!confirm("このタスクを削除しますか？")) {
         return;
@@ -69,17 +95,21 @@ export default function ReadAllTaskPage() {
       } catch (error) {
         console.error(error);
         alert("削除に失敗しました");
-      }
+      };
     }
 
   return (
-    <div>
-      <h1>タスク一覧</h1>
+    <div className="min-h-screen bg-slate-100 py-10">
+      <div className="mx-auto max-w-4xl px-6">
+      <h1 className="mb-10 text-center text-5xl font-bold text-slate-700">タスク一覧</h1>
       <button
       onClick={() => router.push(`/task/create/${categoryId}`)}
-      className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
+      className="mb-4 cursor-pointer  rounded bg-slate-500 px-4 py-2 text-white"
     >タスク作成</button>
-     <br />
+     <button
+      onClick={handleLogout}
+      className="mb-4 cursor-pointer  rounded bg-slate-500 px-4 py-2 text-white"
+    >ログアウト</button>
     <div className="mb-4">
 
   <label>並び替え：</label>
@@ -103,27 +133,43 @@ export default function ReadAllTaskPage() {
       {sortedTasks.map((task) => (
         <div
           key={task.id}
-          className="border rounded-lg p-4 mb-3"
+          className="mb-5 rounded-xl border border-slate-200 bg-white p-6 shadow-md transition hover:shadow-xl"
         >
-          <h2>{task.title}</h2>
+          <h2 className="text-2xl font-semibold text-slate-600">{task.title}</h2>
           <p>開始日：{task.startDate}</p>
           <p>終了日：{task.endDate}</p>
           <p>優先度：{task.priority}</p>
+          <p>ステータス：{task.isFinished ? "完了" : "着手中"}</p>
 
-        <Link href={`/task/update/${task.id}`}
-          onClick={(e) => e.stopPropagation()}>
-          編集
-        </Link>
         <button
-          onClick={() => handleDelete(task.id)}>
-          🗑️
+          onClick={() => router.push(`/task/update/${task.id}`)}
+          className="mb-4 cursor-pointer  rounded bg-slate-500 px-4 py-2 text-white"
+        >編集
+        </button>
+        <button
+        className="mb-4 cursor-pointer  rounded bg-slate-500 px-4 py-2 text-white"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete(task.id);
+          }}
+        >
+          削除
+        </button>
+        <button
+          onClick={() => handleFinish(task.id)}
+          className={`ml-2 cursor-pointer  rounded px-4 py-2 text-white ${
+            task.isFinished ? "bg-red-500" : "bg-slate-500"
+          }`}
+        >
+          {task.isFinished ? "未着手に戻す" : "完了"}
         </button>
         </div>
       ))}
       <button
       onClick={() => router.push("/user/mypage")}
-      className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
+      className="mb-4 cursor-pointer  rounded bg-slate-500 px-4 py-2 text-white"
     >戻る</button>
+      </div>
     </div>
   );
 }

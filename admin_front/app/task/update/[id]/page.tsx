@@ -94,29 +94,29 @@ export default function UpdateTaskPage() {
   };
 
 return (
-  <div>
-    <h1>タスク編集</h1>
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>タスク名</label>
-        <br />
-        <input
-          type="text"
-          value={task.title}
-          required
-          onChange={(e) =>
-            setTask({
+  <div className="min-h-screen bg-slate-100 py-10">
+    <div className="mx-auto max-w-2xl rounded-xl bg-white p-8 shadow-md">
+      <h1 className="text-2xl font-bold mb-4">タスク編集</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label className="block text-lg font-semibold text-slate-700">タスク名</label>
+          <input
+            className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
+            type="text"
+            value={task.title}
+            required
+            onChange={(e) =>
+              setTask({
               ...task,
               title: e.target.value,
             })
           }
         />
       </div>
-      <br />
       <div>
-        <label>開始日</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">開始日</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="date"
           min={new Date().toISOString().split("T")[0]}
           value={task.startDate}
@@ -129,13 +129,10 @@ return (
           }
         />
       </div>
-
-      <br />
-
       <div>
-        <label>終了日</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">終了日</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="date"
           min={new Date().toISOString().split("T")[0]}
           value={task.endDate}
@@ -149,10 +146,10 @@ return (
         />
       </div>
 
-       <div>
-        <label>優先度</label>
-        <br />
+       <div >
+        <label className="block text-lg font-semibold text-slate-700">優先度</label>
         <select
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
         value={task.priority}
         onChange={(e) => 
           setTask({
@@ -168,13 +165,15 @@ return (
         </select>
       </div>
 
-      <button type="submit">更新</button>
+      <button type="submit" className="rounded bg-slate-500 px-4 py-2 text-white">
+        更新
+      </button>
     </form>
-          <p>
-        <button type="button" onClick={() => router.back()}>
-        タスク一覧に戻る  
+    <br />
+        <button type="button" onClick={() => router.back()} className="rounded bg-slate-500 px-4 py-2 text-white">
+          タスク一覧に戻る
         </button>
-      </p>
+  </div>
   </div>
 );
 }

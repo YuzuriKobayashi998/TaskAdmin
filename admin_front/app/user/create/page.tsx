@@ -42,13 +42,14 @@ const handleSubmit = async (
 
 
 return (
-  <div>
-    <h1>ユーザー登録</h1>
+  <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
+    <div className="mx-auto max-w-2xl rounded-xl bg-white p-8 shadow-md">
+    <h1 className="text-2xl font-bold mb-4">ユーザー登録</h1>
     <form onSubmit={handleSubmit}>
       <div>
-        <label>ユーザー名</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">ユーザー名</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="text"
           value={user.name}
           required
@@ -59,12 +60,11 @@ return (
             })
           }
         />
-      </div>
-      <br />
+      </div>  
       <div>
-        <label>パスワード</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">パスワード</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="password"
           value={user.password}
           required
@@ -76,16 +76,17 @@ return (
           }
         />
       </div>
-
-      <br />
-      
-      <button type="submit">登録</button>
+      <button type="submit" className="rounded bg-slate-500 px-4 py-2 text-white">
+        登録
+      </button>
     </form>
+    <br />
           <p>
         <Link href="/user/login">
           ログイン画面に戻る
         </Link>
       </p>
+  </div>
   </div>
 
 );

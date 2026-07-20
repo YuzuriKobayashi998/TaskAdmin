@@ -53,13 +53,14 @@ const handleSubmit = async (
 };
 
 return (
-  <div>
-    <h1>カテゴリ登録</h1>
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>カテゴリ名</label>
-        <br />
+  <div className="min-h-screen bg-slate-100 py-10">
+    <div className="mx-auto max-w-2xl rounded-xl bg-white p-8 shadow-md">
+      <h1 className="text-2xl font-bold mb-4">カテゴリ登録</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label className="block text-lg font-semibold text-slate-700">カテゴリ名</label>  
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="text"
           value={category.title}
           required
@@ -71,11 +72,10 @@ return (
           }
         />
       </div>
-      <br />
       <div>
-        <label>期限日</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">期限日</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="date"
           min={new Date().toISOString().split("T")[0]}
           value={category.dueDate}
@@ -88,12 +88,10 @@ return (
           }
         />
       </div>
-
-      <br />
       <div>
-        <label>コメント</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">コメント</label>  
         <textarea
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           value={category.description}
           onChange={(e) =>
             setCategory({
@@ -103,9 +101,9 @@ return (
           }
         />
       </div>
-      <br />
-      
-      <button type="submit">作成</button>
+      <button  type="submit" className="rounded bg-slate-500 px-4 py-2 text-white">
+        作成
+      </button>
     </form>
       <p>
         <Link href="/user/mypage">
@@ -113,6 +111,6 @@ return (
         </Link>
       </p>
   </div>
-
+</div>
 );
 }

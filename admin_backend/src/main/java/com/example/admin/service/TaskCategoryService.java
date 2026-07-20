@@ -94,7 +94,6 @@ public class TaskCategoryService {
 			taskCategory.setDueDate(request.getDueDate());
 		}
 		taskCategory.setDescription(request.getDescription());
-		System.out.println(authentication.getName());
 		taskCategoryRepository.save(taskCategory);
 		return convertToResponse(taskCategory);
 	}
@@ -115,5 +114,17 @@ public class TaskCategoryService {
 		
 		taskCategory.setDeleted(true);
 		taskCategoryRepository.save(taskCategory);
+	}
+	
+	public TaskCategoryResponse finishTaskCategory(Long taskCategoryId) {
+		 Authentication authentication =
+		            SecurityContextHolder.getContext().getAuthentication();
+		    User user = (User) authentication.getPrincipal();
+		    Long userId = user.getId();
+		TaskCategory taskCategory = taskCategoryRepository.findByIdAndUser_IdAndDeletedFalse (taskCategoryId, userId)
+				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
+		taskCategory.setIsFinished(!taskCategory.getIsFinished());
+		taskCategoryRepository.save(taskCategory);
+		return convertToResponse(taskCategory);
 	}
 }

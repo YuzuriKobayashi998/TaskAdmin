@@ -88,13 +88,14 @@ export default function UpdateTaskPage() {
   };
 
   return (
-  <div>
-    <h1>カテゴリ編集</h1>
+  <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100"> 
+  <div className="mx-auto max-w-2xl rounded-xl bg-white p-8 shadow-md">
+    <h1 className="text-2xl font-bold mb-4">カテゴリ編集</h1>
     <form onSubmit={handleSubmit}>
       <div>
-        <label>カテゴリ名</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">カテゴリ名</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="text"
           value={category.title}
           required
@@ -106,11 +107,10 @@ export default function UpdateTaskPage() {
           }
         />
       </div>
-      <br />
       <div>
-        <label>期限日</label>
-        <br />
+        <label className="block text-lg font-semibold text-slate-700">期限日</label>
         <input
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           type="date"
           min={new Date().toISOString().split("T")[0]}
           value={category.dueDate}
@@ -123,12 +123,11 @@ export default function UpdateTaskPage() {
           }
         />
       </div>
-
-      <br />
       <div>
-        <label>コメント</label>
+        <label className="block text-lg font-semibold text-slate-700">コメント</label>
         <br />
         <textarea
+          className="mb-2 w-full rounded-lg border border-slate-300 p-3 focus:border-sky-500 focus:outline-none"
           value={category.description}
           onChange={(e) =>
             setCategory({
@@ -138,9 +137,9 @@ export default function UpdateTaskPage() {
           }
         />
       </div>
-      <br />
-      
-      <button type="submit">更新</button>
+      <button type="submit" className="rounded bg-slate-500 px-4 py-2 text-white">
+        更新
+      </button>
     </form>
       <p>
         <Link href="/user/mypage">
@@ -148,6 +147,6 @@ export default function UpdateTaskPage() {
         </Link>
       </p>
   </div>
-
+</div>
 );
 }

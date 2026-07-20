@@ -33,7 +33,7 @@ public class TaskService {
 		response.setStartDate(task.getStartDate());
 		response.setEndDate(task.getEndDate());
 		response.setPriority(task.getPriority());
-		response.setFinished(task.getFinished());
+		response.setIsFinished(task.getFinished());
 		response.setTaskCategory(convertToResponse(task.getCategory()));
 		return response;
 	}
@@ -124,4 +124,17 @@ public class TaskService {
 		task.setDeleted(true);
 		taskRepository.save(task);
 	}
+	
+	public TaskResponse finishTask(Long taskId) {
+		 Authentication authentication =
+		            SecurityContextHolder.getContext().getAuthentication();
+		    User user = (User) authentication.getPrincipal();
+		    Long userId = user.getId();
+		Task task = taskRepository.findByIdAndUser_IdAndDeletedFalse (taskId, userId)
+				.orElseThrow(() -> new RuntimeException("タスクが存在しません"));
+		task.setFinished(!task.getFinished());
+		taskRepository.save(task);
+		return convertToResponse(task);
+	}
+	
 }

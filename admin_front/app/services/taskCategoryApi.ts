@@ -89,3 +89,15 @@ export async function getTaskCategoryById(
   }
   return response.json();
 }
+export async function finishTaskCategory(token: string, id: number): Promise<void> {
+  const response = await fetch(`${API_URL}/finish/${id}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("タスクの完了に失敗しました");
+  }
+} 
