@@ -33,7 +33,6 @@ public class LoginService {
 	                    HttpStatus.UNAUTHORIZED,
 	                    "ユーザー名またはパスワードが違います"
 	            ));
-
 	    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
 	        throw new ResponseStatusException(
 	                HttpStatus.UNAUTHORIZED,

@@ -23,7 +23,7 @@ const handleSubmit = async (
     //入力チェック
       if (!loginUser.name || !loginUser.password) {
     alert("ユーザー名とパスワードを入力してください。");
-    return;
+    return null;
   }
     try {
         const user = await login(loginUser);
@@ -33,7 +33,6 @@ const handleSubmit = async (
         //ユーザー登録が完了したらログイン画面に行く
         router.push("/user/mypage")
     } catch(error:unknown) {
-        console.error(error);
         if (error instanceof Error) {
             alert(error.message);
         } else {

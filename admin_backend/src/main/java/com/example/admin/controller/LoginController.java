@@ -17,9 +17,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class LoginController {
-	private final LoginService LoginService;
+	private final LoginService loginService;
 	@PostMapping("/login")
 	public UserResponse login(@Valid @RequestBody LoginRequest request) {
-		return LoginService.login(request);
+		System.out.println("★ LOGIN CONTROLLER 到達");
+		return loginService.login(request);
 	}
 }

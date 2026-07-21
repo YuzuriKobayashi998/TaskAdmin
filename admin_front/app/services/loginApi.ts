@@ -1,8 +1,8 @@
 import { LoginRequest } from "../types/login";
+
 import { UserResponse } from "../types/user";
 
 const API_URL = "http://localhost:8080/auth/login";
-
 export async function login(
   loginRequest: LoginRequest
 ): Promise<UserResponse> {
@@ -13,10 +13,9 @@ export async function login(
     },
     body: JSON.stringify(loginRequest),
   });
-  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.message);
+    throw new Error("ユーザー名またはパスワードが違います");
   }
-
+  const data: UserResponse = await response.json();
   return data;
 }

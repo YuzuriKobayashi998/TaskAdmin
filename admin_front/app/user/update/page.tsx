@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { getMyUser, updateUser } from "@/app/services/userApi";
+import { getMyUser, updateUser, deleteUser } from "@/app/services/userApi";
 import { UserUpdateRequest } from "@/app/types/user";
 
 export default function UpdateUserPage() {
@@ -40,6 +40,25 @@ export default function UpdateUserPage() {
 
     fetchUser();
   }, [router]);
+
+  const handleDelete = async () => {
+        if (!confirm("このユーザーを削除しますか？")) {
+          return;
+        }
+        try {
+          const token = localStorage.getItem("token");
+          if (!token) {
+            alert("ログインしてください");
+            return;
+          }
+          await deleteUser(token);
+          alert("削除しました");
+          router.push("/user/login");
+        } catch (error) {
+          console.error(error);
+          alert("削除に失敗しました");
+        };
+      };
 
   // 更新処理
   const handleSubmit = async (
@@ -125,6 +144,15 @@ export default function UpdateUserPage() {
       >
         戻る
       </button>
+      <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete();
+          }}
+          className="ml-4 rounded bg-red-500 px-4 py-2 text-white"
+        >
+          ユーザー削除
+        </button>
       </p>
     </div>
     </div>
