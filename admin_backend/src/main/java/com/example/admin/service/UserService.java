@@ -2,6 +2,8 @@ package com.example.admin.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,15 +64,16 @@ public class UserService {
 	
 	//ユーザー編集
 	public UserResponse update(UserUpdateRequest request) {
-		Long userId = 1L;//あとからJWTに変更予定
-		User user = userRepository.findByIdAndDeletedFalse(userId)
-				.orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
+		Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    Long userId = user.getId();
 		if(request.getName() != null && !request.getName().isBlank()) {
 			user.setName(request.getName());
 		}
 		
-		if(request.getPassword() != null && !request.getPassword().isBlank()) {
-			user.setPassword(passwordEncoder.encode(request.getPassword()));
+		if (request.getPassword() != null && !request.getPassword().isBlank()) {
+		    user.setPassword(passwordEncoder.encode(request.getPassword()));
 		}
 		userRepository.save(user);
 		return convertToResponse(user);
@@ -78,21 +81,20 @@ public class UserService {
 	
 	//ユーザー情報取得
 	public UserResponse getCurrentUser() {
-		//JWTでログイン情報から取得予定
-		Long userId = 1L;
-		
-		User user = userRepository.findByIdAndDeletedFalse(userId)
-				.orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
+		Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    Long userId = user.getId();
 		return convertToResponse(user);
 	}
 	
 	@Transactional
 	//ユーザー消去
 	public void delete() {
-		Long userId = 1L;
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("ユーザーが存在しません"));
-		
+		Authentication authentication =
+	            SecurityContextHolder.getContext().getAuthentication();
+	    User user = (User) authentication.getPrincipal();
+	    Long userId = user.getId();
 		//ユーザーを削除したらタスクも削除する
 		List<Task> tasks = taskRepository.findByUser_IdAndDeletedFalse(userId);
 		tasks.forEach(task -> task.setDeleted(true)); 

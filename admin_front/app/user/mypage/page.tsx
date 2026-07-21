@@ -109,6 +109,10 @@ export default function Mypage() {
       onClick={handleLogout}
       className="mb-4 rounded bg-slate-500 px-4 py-2 text-white"
     >ログアウト</button>
+    <button
+      onClick={() => router.push("/user/update")}
+      className="mb-4 rounded bg-slate-500 px-4 py-2 text-white"
+    >ユーザー情報変更</button>
     </div>
     <br />
     <div className="mb-8 flex items-center gap-3">
@@ -123,11 +127,13 @@ export default function Mypage() {
     </div>
     <br />
     <h2 className="text-2xl font-semibold text-slate-600">カテゴリ一覧</h2>
-    {sortedCategories.map((category) => (
+    {sortedCategories.map((category) => {
+      const isExpired = !category.isFinished && new Date(category.dueDate) < new Date(new Date().setHours(0, 0, 0, 0));
+      return(
       <div
         key={category.id}
         onClick={() => router.push(`/task/readAll/${category.id}`)}
-        className="mb-5 cursor-pointer rounded-xl border border-slate-200 bg-white p-6 shadow-md transition hover:shadow-xl"
+        className={`mb-5 cursor-pointer rounded-xl border p-6 shadow-md transition hover:shadow-xl ${isExpired ? "border-red-400 bg-red-100" : "border-slate-200 bg-white"}`}
       >
         <h2 className="text-2xl font-semibold text-slate-500">{category.title}</h2>
         <p>期限日：{category.dueDate}</p>
@@ -164,7 +170,8 @@ export default function Mypage() {
         </button>
         </div>
       </div>
-    ))}
+    );
+    })}
     </div>
   </div>
 );

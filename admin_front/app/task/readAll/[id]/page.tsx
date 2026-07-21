@@ -130,10 +130,15 @@ export default function ReadAllTaskPage() {
   </select>
 </div>
     <br />
-      {sortedTasks.map((task) => (
+      {sortedTasks.map((task) => {
+        const isExpired = !task.isFinished && new Date(task.endDate) < new Date(new Date().setHours(0, 0, 0, 0));
+      return(
         <div
           key={task.id}
-          className="mb-5 rounded-xl border border-slate-200 bg-white p-6 shadow-md transition hover:shadow-xl"
+          className={`mb-5 rounded-xl border p-6 shadow-md transition hover:shadow-xl ${isExpired
+          ? "border-red-400 bg-red-100"
+          : "border-slate-200 bg-white"
+        }`}
         >
           <h2 className="text-2xl font-semibold text-slate-600">{task.title}</h2>
           <p>開始日：{task.startDate}</p>
@@ -164,7 +169,8 @@ export default function ReadAllTaskPage() {
           {task.isFinished ? "未着手に戻す" : "完了"}
         </button>
         </div>
-      ))}
+      );
+      })}
       <button
       onClick={() => router.push("/user/mypage")}
       className="mb-4 cursor-pointer  rounded bg-slate-500 px-4 py-2 text-white"

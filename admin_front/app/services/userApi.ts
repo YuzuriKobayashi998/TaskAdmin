@@ -1,11 +1,11 @@
-import { console } from "inspector";
+
 import { UserCreateRequest } from "../types/user";
 import { UserUpdateRequest } from "../types/user";
 import { UserResponse } from "../types/user";
 
 const API_URL = "http://localhost:8080/users";
 
-export async function getMyPage(token: string): Promise<UserResponse> {
+export async function getMyUser(token: string): Promise<UserResponse> {
   const response = await fetch(`${API_URL}/mypage`, {
     headers: {
       Authorization: `Bearer ${token}`,

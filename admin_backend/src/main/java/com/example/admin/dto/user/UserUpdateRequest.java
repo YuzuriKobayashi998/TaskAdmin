@@ -13,7 +13,7 @@ public class UserUpdateRequest {
 	private String name;
 	
 	@Pattern(
-		    regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
+		    regexp = "^$|^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
 		    message = "パスワードは8～20文字の英数字で入力してください"
 		)
 	private String password;
